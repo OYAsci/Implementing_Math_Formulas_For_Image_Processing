@@ -149,3 +149,32 @@ def DT(y):
         np.roll(dx, 1, axis=1) - dx
         + np.roll(dy, 1, axis=0) - dy
     )
+
+def Averageur(u):
+    """
+    Compute the average of a 2D array u.
+    """
+    u = np.asarray(u, dtype=float)
+    v = np.zeros_like(u)
+
+    for a in range(-1, 2):
+        for b in range(-1, 2):
+            shifted = np.roll(u, shift=a, axis=0)
+            shifted = np.roll(shifted, shift=b, axis=1)
+            v += shifted
+
+    return v / 9
+
+def median3x3(u):
+    u = np.asarray(u, dtype=float)
+    neighbours = []
+
+    for a in range(-1, 2):
+        for b in range(-1, 2):
+            shifted = np.roll(u, shift=a, axis=0)
+            shifted = np.roll(shifted, shift=b, axis=1)
+            neighbours.append(shifted)
+
+    neighbours = np.stack(neighbours, axis=0)
+
+    return np.median(neighbours, axis=0)
